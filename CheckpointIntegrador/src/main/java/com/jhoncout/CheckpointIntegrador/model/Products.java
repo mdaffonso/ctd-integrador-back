@@ -17,7 +17,7 @@ public class Products {
     private Integer id;
 
     private String title;
-    private Double price;
+    private Integer price;
     private String description;
     private String image;
 
@@ -25,7 +25,7 @@ public class Products {
     @JoinColumn(name = "categories_id")
     private Categories categories;
 
-    public Products(String title, Double price, String description, String image, Categories categories) {
+    public Products(String title, Integer price, String description, String image, Categories categories) {
         this.title = title;
         this.price = price;
         this.description = description;
@@ -46,11 +46,11 @@ public class Products {
         this.title = title;
     }
 
-    public Double getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
