@@ -20,10 +20,15 @@ public class ProductsService {
     private CategoriesRepository categoriesRepo;
 
     public Products insert(ProductsDAO dao){
-        Categories category = categoriesRepo.getById(dao.getCategories_id());
+        Categories category = categoriesRepo.findByName(dao.getCategory());
 
-        Products product = new Products(dao.getTitle(), dao.getPrice(), dao.getDescription(), dao.getImage(), category);
+        Integer price = fixPrice(dao.getPrice());
 
+        Products product = new Products(dao.getTitle(), price, dao.getDescription(), dao.getImage(), category);
+
+        if(product.getTitle() == null && product.getPrice() == null){
+            return null;
+        }
         return productsRepo.save(product);
     }
 
@@ -34,6 +39,7 @@ public class ProductsService {
     public Products getProductById(Integer id){
         return productsRepo.getById(id);
     }
+
     public List<Products> getProductByCategory(String category){
         return productsRepo.getProductsByCategory(category);
     }
@@ -41,10 +47,12 @@ public class ProductsService {
     public Products updateProduct(ProductsDAO dao, Integer id){
         Products product = productsRepo.getById(id);
 
-        product.setPrice(dao.getPrice());
+        Integer price = fixPrice(dao.getPrice());
+
+        product.setPrice(price);
         product.setDescription(dao.getDescription());
         product.setImage(dao.getImage());
-        product.setCategories(categoriesRepo.getById(dao.getCategories_id()));
+        product.setCategories(categoriesRepo.findByName(dao.getCategory()));
 
         return productsRepo.save(product);
     }
@@ -52,5 +60,12 @@ public class ProductsService {
     public String deleteProduct(Integer id){
         productsRepo.delete(productsRepo.getById(id));
         return "Removed Product successfully";
+    }
+
+    private Integer fixPrice(String priceString){
+        String priceString1 = priceString.substring(0,priceString.length() - 3);
+        String priceString2 = priceString.substring(priceString.length() - 2);
+
+        return Integer.getInteger(priceString1 + priceString2);
     }
 }
