@@ -23,7 +23,7 @@ public class ProductsService {
     public Products insert(ProductsDAO dao){
         Categories category = categoriesRepo.findByName(dao.getCategory());
 
-        Integer price = fixPriceOnPost(dao.getPrice());
+        Integer price = fixPriceForPost(dao.getPrice());
 
         Products product = new Products(dao.getTitle(), price, dao.getDescription(), dao.getImage(), category);
 
@@ -33,8 +33,24 @@ public class ProductsService {
         return productsRepo.save(product);
     }
 
-    public List<Products> getAllProducts(){
-        return productsRepo.findAll();
+    public List<ProductsDAO> getAllProducts(){
+        List<Products> list = productsRepo.findAll();
+        List<ProductsDAO> listDAO = new ArrayList<>();
+
+        list.forEach(product -> {
+            ProductsDAO productDAO = new ProductsDAO();
+            String priceString = fixPriceForGet(product.getPrice());
+
+            productDAO.setTitle(product.getTitle());
+            productDAO.setPrice(priceString);
+            productDAO.setDescription(product.getDescription());
+            productDAO.setImage(product.getImage());
+            productDAO.setCategory(product.getCategories().getName());
+
+            listDAO.add(productDAO);
+        });
+
+        return listDAO;
     }
 
     public Products getProductById(Integer id){
@@ -48,7 +64,7 @@ public class ProductsService {
     public Products updateProduct(ProductsDAO dao, Integer id){
         Products product = productsRepo.getById(id);
 
-        Integer price = fixPriceOnPost(dao.getPrice());
+        Integer price = fixPriceForPost(dao.getPrice());
 
         product.setPrice(price);
         product.setDescription(dao.getDescription());
@@ -63,8 +79,7 @@ public class ProductsService {
         return "Removed Product successfully";
     }
 
-    private Integer fixPriceOnPost(Double price){
-        String priceString = price.toString();
+    private Integer fixPriceForPost(String priceString){
         if(!priceString.contains(".")){
             return Integer.valueOf(priceString + "00");
         }
@@ -78,7 +93,7 @@ public class ProductsService {
             return Integer.valueOf(priceString1 + priceString2);
     }
 
-    private String fixPriceOnGet(Integer price){
+    private String fixPriceForGet(Integer price){
         String priceString = price.toString();
 
         return priceString.substring(0,priceString.length()- 2) + "." + priceString.substring(priceString.length() - 2);
