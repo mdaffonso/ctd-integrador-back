@@ -1,13 +1,22 @@
 package com.jhoncout.CheckpointIntegrador.dao;
 
-public class ProductsDAO {
+import com.jhoncout.CheckpointIntegrador.model.Products;
+
+public class ProductsDTO {
     private String title;
     private String price;
     private String description;
     private String image;
     private String category;
 
-    public ProductsDAO(){}
+    public ProductsDTO(Products product){
+        this.title = product.getTitle();
+        this.price = convertPrice(product.getPrice());
+        this.description = product.getDescription();
+        this.image = product.getImage();
+        this.category = product.getCategories().getName();
+    }
+    public ProductsDTO(){}
 
     public String getTitle() {
         return title;
@@ -47,5 +56,11 @@ public class ProductsDAO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    private String convertPrice(Integer price){
+        String priceString = price.toString();
+
+        return priceString.substring(0,priceString.length()- 2) + "." + priceString.substring(priceString.length() - 2);
     }
 }
