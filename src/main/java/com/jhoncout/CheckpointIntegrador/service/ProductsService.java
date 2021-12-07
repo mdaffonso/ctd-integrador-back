@@ -1,15 +1,14 @@
 package com.jhoncout.CheckpointIntegrador.service;
 
-import com.jhoncout.CheckpointIntegrador.dao.ProductsDAO;
+import com.jhoncout.CheckpointIntegrador.dao.ProductsDTO;
 import com.jhoncout.CheckpointIntegrador.model.Categories;
 import com.jhoncout.CheckpointIntegrador.model.Products;
 import com.jhoncout.CheckpointIntegrador.repository.CategoriesRepository;
 import com.jhoncout.CheckpointIntegrador.repository.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductsService {
@@ -20,7 +19,7 @@ public class ProductsService {
     @Autowired
     private CategoriesRepository categoriesRepo;
 
-    public Products insert(ProductsDAO dao){
+    public Products insert(ProductsDTO dao){
         Categories category = categoriesRepo.findByName(dao.getCategory());
 
         Integer price = fixPriceForPost(dao.getPrice());
@@ -33,24 +32,8 @@ public class ProductsService {
         return productsRepo.save(product);
     }
 
-    public List<ProductsDAO> getAllProducts(){
-        List<Products> list = productsRepo.findAll();
-        List<ProductsDAO> listDAO = new ArrayList<>();
-
-        list.forEach(product -> {
-            ProductsDAO productDAO = new ProductsDAO();
-            String priceString = fixPriceForGet(product.getPrice());
-
-            productDAO.setTitle(product.getTitle());
-            productDAO.setPrice(priceString);
-            productDAO.setDescription(product.getDescription());
-            productDAO.setImage(product.getImage());
-            productDAO.setCategory(product.getCategories().getName());
-
-            listDAO.add(productDAO);
-        });
-
-        return listDAO;
+    public List<ProductsDTO> getAllProducts(){
+        return productsRepo.findAll().stream().map(ProductsDTO::new).collect(Collectors.toList());
     }
 
     public Products getProductById(Integer id){
@@ -61,7 +44,7 @@ public class ProductsService {
         return productsRepo.getProductsByCategory(category);
     }
 
-    public Products updateProduct(ProductsDAO dao, Integer id){
+    public Products updateProduct(ProductsDTO dao, Integer id){
         Products product = productsRepo.getById(id);
 
         Integer price = fixPriceForPost(dao.getPrice());
@@ -91,11 +74,5 @@ public class ProductsService {
             if(priceString2.length() < 2) priceString2 = priceString2 + "0";
 
             return Integer.valueOf(priceString1 + priceString2);
-    }
-
-    private String fixPriceForGet(Integer price){
-        String priceString = price.toString();
-
-        return priceString.substring(0,priceString.length()- 2) + "." + priceString.substring(priceString.length() - 2);
     }
 }
