@@ -2,7 +2,7 @@ package com.jhoncout.CheckpointIntegrador.dao;
 
 public class ProductsDAO {
     private String title;
-    private String price;
+    private Double price;
     private String description;
     private String image;
     private String category;
@@ -15,11 +15,11 @@ public class ProductsDAO {
         this.title = title;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
