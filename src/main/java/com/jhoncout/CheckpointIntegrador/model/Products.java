@@ -18,6 +18,8 @@ public class Products {
 
     private String title;
     private Integer price;
+
+    @Column(length = 1000)
     private String description;
     private String image;
 
