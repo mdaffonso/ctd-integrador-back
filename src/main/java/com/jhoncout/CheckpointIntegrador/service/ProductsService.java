@@ -8,6 +8,7 @@ import com.jhoncout.CheckpointIntegrador.repository.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,7 +23,7 @@ public class ProductsService {
     public Products insert(ProductsDAO dao){
         Categories category = categoriesRepo.findByName(dao.getCategory());
 
-        Integer price = fixPrice(dao.getPrice());
+        Integer price = fixPriceOnPost(dao.getPrice());
 
         Products product = new Products(dao.getTitle(), price, dao.getDescription(), dao.getImage(), category);
 
@@ -47,7 +48,7 @@ public class ProductsService {
     public Products updateProduct(ProductsDAO dao, Integer id){
         Products product = productsRepo.getById(id);
 
-        Integer price = fixPrice(dao.getPrice());
+        Integer price = fixPriceOnPost(dao.getPrice());
 
         product.setPrice(price);
         product.setDescription(dao.getDescription());
@@ -62,10 +63,24 @@ public class ProductsService {
         return "Removed Product successfully";
     }
 
-    private Integer fixPrice(String priceString){
-        String priceString1 = priceString.substring(0,priceString.length() - 3);
-        String priceString2 = priceString.substring(priceString.length() - 2);
+    private Integer fixPriceOnPost(Double price){
+        String priceString = price.toString();
+        if(!priceString.contains(".")){
+            return Integer.valueOf(priceString + "00");
+        }
+            int dotIndex = priceString.indexOf(".");
 
-        return Integer.getInteger(priceString1 + priceString2);
+            String priceString1 = priceString.substring(0,dotIndex);
+            String priceString2 = priceString.substring(dotIndex + 1);
+
+            if(priceString2.length() < 2) priceString2 = priceString2 + "0";
+
+            return Integer.valueOf(priceString1 + priceString2);
+    }
+
+    private String fixPriceOnGet(Integer price){
+        String priceString = price.toString();
+
+        return priceString.substring(0,priceString.length()- 2) + "." + priceString.substring(priceString.length() - 2);
     }
 }
