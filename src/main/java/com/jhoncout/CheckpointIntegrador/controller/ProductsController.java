@@ -1,6 +1,6 @@
 package com.jhoncout.CheckpointIntegrador.controller;
 
-import com.jhoncout.CheckpointIntegrador.dao.ProductsDAO;
+import com.jhoncout.CheckpointIntegrador.dao.ProductsDTO;
 import com.jhoncout.CheckpointIntegrador.model.Products;
 import com.jhoncout.CheckpointIntegrador.service.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class ProductsController {
     private ProductsService service;
 
     @PostMapping
-    public ResponseEntity<Products> insert(@RequestBody ProductsDAO dao){
+    public ResponseEntity<Products> insert(@RequestBody ProductsDTO dao){
         try {
             return ResponseEntity.ok(service.insert(dao));
         }catch (Exception e){
@@ -27,13 +27,13 @@ public class ProductsController {
     }
 
     @PostMapping("/all")
-    public ResponseEntity<String> inserAll(@RequestBody List<ProductsDAO> list){
+    public ResponseEntity<String> inserAll(@RequestBody List<ProductsDTO> list){
         list.forEach(this::insert);
         return null;
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductsDAO>> getAllProducts(){
+    public ResponseEntity<List<ProductsDTO>> getAllProducts(){
         try {
             return ResponseEntity.ok(service.getAllProducts());
         }catch (Exception e){
@@ -66,7 +66,7 @@ public class ProductsController {
     // Daqui pra baixo eu que quis terminar o CRUD
 
     @PutMapping("/{id}")
-    public ResponseEntity<Products> updateProduct(@RequestBody ProductsDAO dao, Integer id){
+    public ResponseEntity<Products> updateProduct(@RequestBody ProductsDTO dao, Integer id){
         try {
             return ResponseEntity.ok(service.updateProduct(dao,id));
         }catch (Exception e){
