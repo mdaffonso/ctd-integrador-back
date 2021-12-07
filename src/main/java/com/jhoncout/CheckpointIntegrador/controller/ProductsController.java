@@ -26,6 +26,12 @@ public class ProductsController {
         }
     }
 
+    @PostMapping("/all")
+    public ResponseEntity<String> inserAll(@RequestBody List<ProductsDAO> list){
+        list.forEach(this::insert);
+        return null;
+    }
+
     @GetMapping
     public ResponseEntity<List<Products>> getAllProducts(){
         try {
