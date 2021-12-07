@@ -33,7 +33,7 @@ public class ProductsController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Products>> getAllProducts(){
+    public ResponseEntity<List<ProductsDAO>> getAllProducts(){
         try {
             return ResponseEntity.ok(service.getAllProducts());
         }catch (Exception e){
