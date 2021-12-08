@@ -1,6 +1,6 @@
 package com.jhoncout.CheckpointIntegrador.service;
 
-import com.jhoncout.CheckpointIntegrador.dao.ProductsDTO;
+import com.jhoncout.CheckpointIntegrador.dto.ProductsDTO;
 import com.jhoncout.CheckpointIntegrador.model.Categories;
 import com.jhoncout.CheckpointIntegrador.model.Products;
 import com.jhoncout.CheckpointIntegrador.repository.CategoriesRepository;
@@ -36,12 +36,12 @@ public class ProductsService {
         return productsRepo.findAll().stream().map(ProductsDTO::new).collect(Collectors.toList());
     }
 
-    public Products getProductById(Integer id){
-        return productsRepo.getById(id);
+    public ProductsDTO getProductById(Integer id){
+        return new ProductsDTO(productsRepo.getById(id));
     }
 
-    public List<Products> getProductByCategory(String category){
-        return productsRepo.getProductsByCategory(category);
+    public List<ProductsDTO> getProductByCategory(String category){
+        return productsRepo.getProductsByCategory(category).stream().map(ProductsDTO::new).collect(Collectors.toList());
     }
 
     public Products updateProduct(ProductsDTO dao, Integer id){

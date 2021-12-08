@@ -1,6 +1,6 @@
 package com.jhoncout.CheckpointIntegrador.controller;
 
-import com.jhoncout.CheckpointIntegrador.dao.ProductsDTO;
+import com.jhoncout.CheckpointIntegrador.dto.ProductsDTO;
 import com.jhoncout.CheckpointIntegrador.model.Products;
 import com.jhoncout.CheckpointIntegrador.service.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class ProductsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Products> getProductById(@PathVariable Integer id){
+    public ResponseEntity<ProductsDTO> getProductById(@PathVariable Integer id){
         try {
             return ResponseEntity.ok(service.getProductById(id));
         }catch (Exception e){
@@ -54,7 +54,7 @@ public class ProductsController {
 
     // Buscar lista de produtos por categoria
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<Products>> getProductByCategory(@PathVariable String category){
+    public ResponseEntity<List<ProductsDTO>> getProductByCategory(@PathVariable String category){
         try {
             return ResponseEntity.ok(service.getProductByCategory(category));
         }catch (Exception e){

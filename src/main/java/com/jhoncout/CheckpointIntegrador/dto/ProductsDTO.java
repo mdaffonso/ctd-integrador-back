@@ -1,4 +1,4 @@
-package com.jhoncout.CheckpointIntegrador.dao;
+package com.jhoncout.CheckpointIntegrador.dto;
 
 import com.jhoncout.CheckpointIntegrador.model.Products;
 
