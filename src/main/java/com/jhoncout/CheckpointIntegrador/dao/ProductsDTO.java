@@ -3,6 +3,7 @@ package com.jhoncout.CheckpointIntegrador.dao;
 import com.jhoncout.CheckpointIntegrador.model.Products;
 
 public class ProductsDTO {
+    private Integer id;
     private String title;
     private String price;
     private String description;
@@ -10,6 +11,7 @@ public class ProductsDTO {
     private String category;
 
     public ProductsDTO(Products product){
+        this.id = product.getId();
         this.title = product.getTitle();
         this.price = convertPrice(product.getPrice());
         this.description = product.getDescription();
@@ -17,6 +19,10 @@ public class ProductsDTO {
         this.category = product.getCategories().getName();
     }
     public ProductsDTO(){}
+
+    public Integer getId() {
+        return id;
+    }
 
     public String getTitle() {
         return title;
