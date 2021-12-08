@@ -15,6 +15,7 @@ public class CategoriesDTO {
         this.name = category.getName();
         this.products = convertListProduct(category.getProducts());
     }
+    public CategoriesDTO(){}
 
     public Integer getId() {
         return id;
