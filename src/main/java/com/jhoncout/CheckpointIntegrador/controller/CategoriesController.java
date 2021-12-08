@@ -1,5 +1,6 @@
 package com.jhoncout.CheckpointIntegrador.controller;
 
+import com.jhoncout.CheckpointIntegrador.dto.CategoriesDTO;
 import com.jhoncout.CheckpointIntegrador.model.Categories;
 import com.jhoncout.CheckpointIntegrador.service.CategoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class CategoriesController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Categories>> getAllCategories(){
+    public ResponseEntity<List<CategoriesDTO>> getAllCategories(){
         try {
             return ResponseEntity.ok(service.getAllCategories());
         }catch (Exception e){
@@ -36,7 +37,7 @@ public class CategoriesController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Categories> getCategoryById(@PathVariable Integer id){
+    public ResponseEntity<CategoriesDTO> getCategoryById(@PathVariable Integer id){
         try {
             return ResponseEntity.ok(service.getCategoryById(id));
         }catch (Exception e){
